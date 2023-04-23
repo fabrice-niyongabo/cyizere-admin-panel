@@ -6,23 +6,17 @@ import { BACKEND_URL } from "../../../constants";
 import { errorHandler, setHeaders, toastMessage } from "../../../helpers";
 
 const initialState = {
-  shopCategoryId: 0,
+  mId: 0,
   name: "",
 };
-function Edit({
-  showModal,
-  setShowModal,
-  editItem,
-  fetchData,
-  shopCategories,
-}) {
+function Edit({ showModal, setShowModal, editItem, fetchData }) {
   const { token } = useSelector((state) => state.user);
   const [state, setState] = useState(initialState);
   const [isSubmitting, setSubmitting] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitting(true);
-    Axios.put(BACKEND_URL + "/productcategories/", state, setHeaders(token))
+    Axios.put(BACKEND_URL + "/categories/", state, setHeaders(token))
       .then((res) => {
         toastMessage("success", res.data.msg);
         setSubmitting(false);
@@ -58,23 +52,6 @@ function Edit({
             <Modal.Title>Edit Category</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div className="form-group mb-3">
-              <select
-                name="shopCategoryId"
-                className="form-select"
-                value={state.shopCategoryId}
-                onChange={changeHandler}
-                required
-                disabled={isSubmitting}
-              >
-                <option value="">Choose Shop Category</option>
-                {shopCategories.map((item, i) => (
-                  <option key={i} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
             <div className="form-group mb-3">
               <input
                 type="text"

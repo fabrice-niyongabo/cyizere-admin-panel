@@ -13,6 +13,7 @@ const AntIcons = Loadable(
 const ProductCategories = Loadable(
   lazy(() => import("../pages/product-categories"))
 );
+const ShopCategories = Loadable(lazy(() => import("../pages/shop-categories")));
 const Markets = Loadable(lazy(() => import("../pages/markets")));
 const Products = Loadable(lazy(() => import("../pages/products")));
 const DeliveryFees = Loadable(lazy(() => import("../pages/delivery-fees")));
@@ -54,6 +55,10 @@ const MainRoutes = {
     {
       path: "/dashboard/productcategories",
       element: <ProductCategories />,
+    },
+    {
+      path: "/dashboard/shopcategories",
+      element: <ShopCategories />,
     },
     {
       path: "/dashboard/products",

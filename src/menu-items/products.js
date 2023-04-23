@@ -9,8 +9,15 @@ const pages = {
   type: "group",
   children: [
     {
+      id: "shopCategories",
+      title: "Shop Categories",
+      type: "item",
+      url: "/dashboard/shopcategories",
+      icon: AlignLeftOutlined,
+    },
+    {
       id: "productCategories",
-      title: "Categories",
+      title: "Product Categories",
       type: "item",
       url: "/dashboard/productcategories",
       icon: AlignLeftOutlined,

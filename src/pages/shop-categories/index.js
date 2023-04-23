@@ -11,14 +11,13 @@ import { EditOutlined, CloseOutlined } from "@ant-design/icons";
 import Edit from "./edit";
 import Confirmation from "../../controllers/confirmation";
 
-const initialState = { name: "", image: "", shopCategoryId: "" };
+const initialState = { name: "", image: "" };
 const ProductCategories = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [state, setState] = useState(initialState);
   const { token } = useSelector((state) => state.user);
   const [markets, setMarkets] = useState([]);
-  const [shopCategories, setShopCategories] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState(null);
@@ -34,7 +33,7 @@ const ProductCategories = () => {
     try {
       setIsSubmitting(false);
       const res = await axios.delete(
-        BACKEND_URL + "/productcategories/" + deleteItem.id,
+        BACKEND_URL + "/shopcategories/" + deleteItem.id,
         setHeaders(token)
       );
       setState(initialState);
@@ -57,12 +56,11 @@ const ProductCategories = () => {
     const formData = new FormData();
     formData.append("file", state.image);
     formData.append("name", state.name);
-    formData.append("shopCategoryId", state.shopCategoryId);
     setIsSubmitting(true);
     try {
       setIsSubmitting(false);
       const res = await axios.post(
-        BACKEND_URL + "/productcategories/",
+        BACKEND_URL + "/shopcategories/",
         formData,
         setHeaders(token)
       );
@@ -79,7 +77,7 @@ const ProductCategories = () => {
   const fetchData = () => {
     setIsLoading(true);
     axios
-      .get(BACKEND_URL + "/productcategories/", setHeaders(token))
+      .get(BACKEND_URL + "/shopcategories/", setHeaders(token))
       .then((res) => {
         setIsLoading(false);
         setMarkets(res.data.categories);
@@ -90,33 +88,9 @@ const ProductCategories = () => {
       });
   };
 
-  const fetchData2 = () => {
-    setIsLoading(true);
-    axios
-      .get(BACKEND_URL + "/shopcategories/", setHeaders(token))
-      .then((res) => {
-        setIsLoading(false);
-        setShopCategories(res.data.categories);
-      })
-      .catch((error) => {
-        setIsLoading(false);
-        errorHandler(error);
-      });
-  };
-
   useEffect(() => {
     fetchData();
-    fetchData2();
   }, []);
-
-  const returnShopCategoryName = (shopCategoryId) => {
-    let name = "";
-    const fnd = shopCategories.find((item) => item.id == shopCategoryId);
-    if (fnd) {
-      name = fnd.name;
-    }
-    return name;
-  };
 
   return (
     <>
@@ -124,7 +98,7 @@ const ProductCategories = () => {
         <Grid item md={8}>
           <Card>
             <Card.Header>
-              <strong>Product Categories</strong>
+              <strong>Shop Categories</strong>
             </Card.Header>
             <Card.Body>
               {isLoading ? (
@@ -137,7 +111,6 @@ const ProductCategories = () => {
                         <th>#</th>
                         <th>Image</th>
                         <th>Name</th>
-                        <th>Shop Category</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -153,7 +126,6 @@ const ProductCategories = () => {
                             />
                           </td>
                           <td>{item.name}</td>
-                          <td>{returnShopCategoryName(item.shopCategoryId)}</td>
                           <td>
                             {deleteItem &&
                             deleteItem.id === item.id &&
@@ -196,23 +168,6 @@ const ProductCategories = () => {
             <Card.Body>
               <form onSubmit={handleSubmit}>
                 <div className="form-group mb-3">
-                  <select
-                    name="shopCategoryId"
-                    className="form-select"
-                    value={state.shopCategoryId}
-                    onChange={changeHandler}
-                    required
-                    disabled={isSubmitting}
-                  >
-                    <option value="">Choose Shop Category</option>
-                    {shopCategories.map((item, i) => (
-                      <option key={i} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="form-group mb-3">
                   <input
                     type="text"
                     name="name"
@@ -254,7 +209,6 @@ const ProductCategories = () => {
         setShowModal={setShowModal}
         editItem={editItem}
         fetchData={fetchData}
-        shopCategories={shopCategories}
       />
       <Confirmation
         showAlert={showAlert}

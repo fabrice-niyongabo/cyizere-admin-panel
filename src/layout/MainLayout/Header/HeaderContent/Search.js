@@ -22,7 +22,7 @@ const Search = () => (
         placeholder="Search"
       /> */}
       <span>
-        <b>Ntuma Admin Control Panel</b>
+        <b>Cyizere Admin Panel</b>
       </span>
     </FormControl>
   </Box>
