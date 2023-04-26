@@ -19,7 +19,7 @@ const Products = Loadable(lazy(() => import("../pages/products")));
 const DeliveryFees = Loadable(lazy(() => import("../pages/delivery-fees")));
 const Dishes = Loadable(lazy(() => import("../pages/dishes")));
 const Users = Loadable(lazy(() => import("../pages/users")));
-const Agents = Loadable(lazy(() => import("../pages/agents")));
+const Suppliers = Loadable(lazy(() => import("../pages/suppliers")));
 const Riders = Loadable(lazy(() => import("../pages/riders")));
 const AgentsFees = Loadable(lazy(() => import("../pages/agentsFees")));
 const AgentsWallet = Loadable(lazy(() => import("../pages/agents-wallet")));
@@ -77,8 +77,8 @@ const MainRoutes = {
       element: <Users />,
     },
     {
-      path: "/dashboard/agents",
-      element: <Agents />,
+      path: "/dashboard/suppliers",
+      element: <Suppliers />,
     },
     {
       path: "/dashboard/riders",

@@ -14,10 +14,10 @@ const pages = {
       icon: AlignLeftOutlined,
     },
     {
-      id: "agents",
-      title: "Agents",
+      id: "suppliers",
+      title: "Suppliers",
       type: "item",
-      url: "/dashboard/agents",
+      url: "/dashboard/suppliers",
       icon: ProfileOutlined,
     },
     {
