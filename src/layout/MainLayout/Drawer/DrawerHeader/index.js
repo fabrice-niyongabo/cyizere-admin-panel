@@ -20,7 +20,7 @@ const DrawerHeader = ({ open }) => {
           src={require("../../../../assets/logo.png")}
           style={{ width: 50 }}
         />
-        <span>Ntuma App</span>
+        <span>Cyizere App</span>
       </Stack>
     </DrawerHeaderStyled>
   );

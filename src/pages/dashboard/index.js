@@ -122,7 +122,7 @@ const DashboardDefault = () => {
 
   return (
     <Grid container rowSpacing={4.5} columnSpacing={2.75}>
-      {/* row 1 */}
+      {/*       
       <Grid item xs={12} sx={{ mb: -2.25 }}>
         <Typography variant="h5">Dashboard</Typography>
       </Grid>
@@ -164,8 +164,7 @@ const DashboardDefault = () => {
         md={8}
         sx={{ display: { sm: "none", md: "block", lg: "none" } }}
       />
-
-      {/* row 3 */}
+ 
       <Grid item xs={12} md={7} lg={8}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
@@ -232,42 +231,17 @@ const DashboardDefault = () => {
           </List>
         </MainCard>
       </Grid>
-
-      {/* row 4 */}
+ 
       <Grid item xs={12} md={12} lg={12}>
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
             <Typography variant="h5">Sales Report</Typography>
-          </Grid>
-          {/* <Grid item>
-            <TextField
-              id="standard-select-currency"
-              size="small"
-              select
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              sx={{
-                "& .MuiInputBase-input": { py: 0.5, fontSize: "0.875rem" },
-              }}
-            >
-              {status.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid> */}
+          </Grid> 
         </Grid>
-        <MainCard sx={{ mt: 1.75 }}>
-          {/* <Stack spacing={1.5} sx={{ mb: -12 }}>
-            <Typography variant="h6" color="secondary">
-              Net Profit
-            </Typography>
-            <Typography variant="h4">$1560</Typography>
-          </Stack> */}
+        <MainCard sx={{ mt: 1.75 }}> 
           <SalesColumnChart transactions={transactions} orders={orders} />
         </MainCard>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 };

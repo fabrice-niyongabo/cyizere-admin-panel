@@ -5,7 +5,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
-  key: "ntuma-main-key-3211",
+  key: "cyizere-main-key-3211",
   storage,
 };
 

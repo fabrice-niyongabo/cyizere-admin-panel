@@ -63,10 +63,7 @@ function Edit({ showModal, setShowModal, editItem, fetchData }) {
                 required
                 disabled={isSubmitting}
               >
-                <option value="">Choose Vehicle</option>
-                <option value="BIKE">BIKE</option>
                 <option value="MOTORCYCLE">MOTORCYCLE</option>
-                <option value="CAR">CAR</option>
               </select>
             </div>
             <div className="form-group mb-3">

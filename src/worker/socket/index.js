@@ -21,7 +21,7 @@ export const subscribeToSocket = (store) => {
     console.log("connected to socket");
   });
   emitSocket("addUser", { userType: "admin", email: user.email });
-  mSocket.on("NtumaEventNames", (data) => {
+  mSocket.on("CyizereEventNames", (data) => {
     // console.log(data);
     if (
       data.type !== undefined &&

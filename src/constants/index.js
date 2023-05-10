@@ -12,10 +12,10 @@ export const APP_COLORS = {
 };
 
 export const EVENT_NAMES_ENUM = {
-  NtumaEventNames: "NtumaEventNames",
-  NtumaClientEventNames: "NtumaClientEventNames",
-  NtumaAgentEventNames: "NtumaAgentEventNames",
-  NtumaRiderEventNames: "NtumaRiderEventNames",
+  CyizereEventNames: "CyizereEventNames",
+  CyizereClientEventNames: "CyizereClientEventNames",
+  CyizereAgentEventNames: "CyizereAgentEventNames",
+  CyizereRiderEventNames: "CyizereRiderEventNames",
   //markets
   ADD_MARKET: "ADD_MARKET",
   UPDATE_MARKET: "UPDATE_MARKET",

@@ -72,7 +72,7 @@ const AuthLogin = () => {
         if (role !== "admin") {
           toastMessage(
             "error",
-            "This is not a client app, Please download the Ntuma app to get started."
+            "This is not a client app, Please download the Cyizere app to get started."
           );
         } else {
           dispatch(setUserNames(names));

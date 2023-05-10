@@ -1,1 +1,1 @@
-# Ntuma App Admin Controll Panel
+# Cyizere App Admin Controll Panel

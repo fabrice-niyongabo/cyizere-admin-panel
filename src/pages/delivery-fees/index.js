@@ -3,7 +3,12 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL, FILE_URL } from "../../constants";
 import { useSelector } from "react-redux";
-import { errorHandler, setHeaders, toastMessage } from "../../helpers";
+import {
+  currencyFormatter,
+  errorHandler,
+  setHeaders,
+  toastMessage,
+} from "../../helpers";
 import { Grid } from "@mui/material";
 import { Spinner } from "react-bootstrap";
 import Loader from "../loader";
@@ -12,7 +17,7 @@ import Edit from "./edit";
 import Confirmation from "../../controllers/confirmation";
 
 const initialState = {
-  vehicleType: "",
+  vehicleType: "MOTORCYCLE",
   amountPerKilometer: "",
   defaultPrice: "",
 };
@@ -118,8 +123,8 @@ const DeliveryFees = () => {
                         <tr key={index}>
                           <td>{index + 1}</td>
                           <td>{item.vehicleType}</td>
-                          <td>{item.defaultPrice}</td>
-                          <td>{item.amountPerKilometer}</td>
+                          <td>{currencyFormatter(item.defaultPrice)}</td>
+                          <td>{currencyFormatter(item.amountPerKilometer)}</td>
                           <td>
                             {deleteItem &&
                             deleteItem.id === item.id &&
@@ -170,10 +175,7 @@ const DeliveryFees = () => {
                     required
                     disabled={isSubmitting}
                   >
-                    <option value="">Choose Vehicle</option>
-                    <option value="BIKE">BIKE</option>
                     <option value="MOTORCYCLE">MOTORCYCLE</option>
-                    <option value="CAR">CAR</option>
                   </select>
                 </div>
                 <div className="form-group mb-3">
