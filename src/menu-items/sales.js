@@ -13,6 +13,13 @@ const pages = {
       url: "/dashboard/orders",
       icon: ProfileOutlined,
     },
+    {
+      id: "banners",
+      title: "Banners",
+      type: "item",
+      url: "/dashboard/banners",
+      icon: ProfileOutlined,
+    },
   ],
 };
 

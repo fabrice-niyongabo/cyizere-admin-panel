@@ -35,6 +35,7 @@ const PackagingFees = Loadable(lazy(() => import("../pages/packagingFees")));
 const Orders = Loadable(lazy(() => import("../pages/orders")));
 const Profile = Loadable(lazy(() => import("../pages/profile")));
 const TrackRiders = Loadable(lazy(() => import("../pages/track-rider")));
+const Banners = Loadable(lazy(() => import("../pages/banners")));
 
 const MainRoutes = {
   path: "/dashboard",
@@ -127,6 +128,10 @@ const MainRoutes = {
     {
       path: "/dashboard/profile",
       element: <Profile />,
+    },
+    {
+      path: "/dashboard/banners",
+      element: <Banners />,
     },
   ],
 };
