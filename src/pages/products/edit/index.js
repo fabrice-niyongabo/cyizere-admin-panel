@@ -76,58 +76,12 @@ function Edit({
           </Modal.Header>
           <Modal.Body>
             <div className="form-group mb-3">
-              <select
-                name="marketId"
-                className="form-select"
-                value={state.marketId}
-                onChange={changeHandler}
-                required
-                disabled={isSubmitting}
-              >
-                <option value="">Choose Market</option>
-                {markets.map((item, i) => (
-                  <option key={i} value={item.mId}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group mb-3">
-              <select
-                name="categoryId"
-                className="form-select"
-                value={state.categoryId}
-                onChange={changeHandler}
-                required
-                disabled={isSubmitting}
-              >
-                <option value="">Choose Category</option>
-                {categories.map((item, i) => (
-                  <option key={i} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="form-group mb-3">
               <input
                 type="text"
                 name="name"
                 className="form-control"
                 placeholder="Product Name"
                 value={state.name}
-                onChange={changeHandler}
-                required
-                disabled={isSubmitting}
-              />
-            </div>
-            <div className="form-group mb-3">
-              <input
-                type="text"
-                name="kName"
-                className="form-control"
-                placeholder="Kinyarwanda Product Name"
-                value={state.kName}
                 onChange={changeHandler}
                 required
                 disabled={isSubmitting}
@@ -213,15 +167,18 @@ function Edit({
               />
             </div>
             <div className="form-group mb-3">
-              <textarea
-                type="text"
-                name="kDescription"
-                className="form-control"
-                placeholder="Kinyarwanda Description"
-                value={state.kDescription}
+              <label>Status</label>
+              <select
+                name="isActive"
+                className="form-select"
+                value={state.isActive}
                 onChange={changeHandler}
+                required
                 disabled={isSubmitting}
-              />
+              >
+                <option value={true}>Active</option>
+                <option value={false}>Inactive</option>
+              </select>
             </div>
           </Modal.Body>
           <Modal.Footer>

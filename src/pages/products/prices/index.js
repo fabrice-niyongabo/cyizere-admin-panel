@@ -130,7 +130,7 @@ function Prices({ showModal, setShowModal, productItem }) {
         onHide={() => setShowModal(false)}
         backdrop="static"
         keyboard={false}
-        size="xl"
+        size="lg"
       >
         <Modal.Header closeButton>
           <Modal.Title>
@@ -139,7 +139,7 @@ function Prices({ showModal, setShowModal, productItem }) {
         </Modal.Header>
         <Modal.Body>
           <Grid container spacing={3}>
-            <Grid item md={8}>
+            <Grid item md={12}>
               {isGettingData ? (
                 <Loader />
               ) : (
@@ -266,42 +266,6 @@ function Prices({ showModal, setShowModal, productItem }) {
                   </table>
                 </div>
               )}
-            </Grid>
-            <Grid item md={4}>
-              <form onSubmit={handleSubmit}>
-                <h3>Add price</h3>
-                <div className="form-group mb-3">
-                  <input
-                    type="text"
-                    name="name"
-                    className="form-control"
-                    placeholder="Title  ex: mironko or kg"
-                    value={state.name}
-                    onChange={changeHandler}
-                    required
-                    disabled={isSubmitting}
-                  />
-                </div>
-                <div className="form-group mb-3">
-                  <input
-                    type="number"
-                    name="amount"
-                    className="form-control"
-                    placeholder="Amount"
-                    value={state.amount}
-                    onChange={changeHandler}
-                    required
-                    disabled={isSubmitting}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting && <Spinner size="sm" />} Submit
-                </button>
-              </form>
             </Grid>
           </Grid>
         </Modal.Body>
