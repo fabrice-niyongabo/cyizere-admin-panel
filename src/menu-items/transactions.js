@@ -13,20 +13,20 @@ const pages = {
       url: "/dashboard/transactions",
       icon: AlignLeftOutlined,
     },
-    {
-      id: "agentsWallet",
-      title: "Agents Wallet",
-      type: "item",
-      url: "/dashboard/agentswallet",
-      icon: ProfileOutlined,
-    },
-    {
-      id: "ridersWallet",
-      title: "Riders Wallet",
-      type: "item",
-      url: "/dashboard/riderswallet",
-      icon: ProfileOutlined,
-    },
+    // {
+    //   id: "agentsWallet",
+    //   title: "Agents Wallet",
+    //   type: "item",
+    //   url: "/dashboard/agentswallet",
+    //   icon: ProfileOutlined,
+    // },
+    // {
+    //   id: "ridersWallet",
+    //   title: "Riders Wallet",
+    //   type: "item",
+    //   url: "/dashboard/riderswallet",
+    //   icon: ProfileOutlined,
+    // },
   ],
 };
 

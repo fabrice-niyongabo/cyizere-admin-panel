@@ -13,20 +13,13 @@ const pages = {
       url: "/dashboard/users",
       icon: AlignLeftOutlined,
     },
-    {
-      id: "suppliers",
-      title: "Suppliers",
-      type: "item",
-      url: "/dashboard/suppliers",
-      icon: ProfileOutlined,
-    },
-    {
-      id: "riders",
-      title: "Riders",
-      type: "item",
-      url: "/dashboard/riders",
-      icon: ProfileOutlined,
-    },
+    // {
+    //   id: "riders",
+    //   title: "Riders",
+    //   type: "item",
+    //   url: "/dashboard/riders",
+    //   icon: ProfileOutlined,
+    // },
   ],
 };
 
