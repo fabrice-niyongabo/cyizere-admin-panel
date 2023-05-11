@@ -110,10 +110,6 @@ const MainRoutes = {
       element: <RidersWallet />,
     },
     {
-      path: "/dashboard/supplierspayment",
-      element: <Supplierspayment />,
-    },
-    {
       path: "/dashboard/systemfees",
       element: <SystemFees />,
     },

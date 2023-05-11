@@ -7,14 +7,14 @@ import fees from "./fees";
 import dishes from "./dishes";
 import users from "./users";
 import transactions from "./transactions";
-import payments from "./payments";
+// import payments from "./payments";
 
 const menuItems = {
   items: [
     dashboard,
     suppliers,
     products,
-    payments,
+    // payments,
     sales,
     fees,
     dishes,
