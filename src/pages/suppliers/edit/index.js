@@ -12,6 +12,8 @@ const initialState = {
   verificationMessage: "",
   isDisabled: false,
   sendNotification: false,
+  shopLat: "",
+  shopLong: "",
 };
 function Edit({ showModal, setShowModal, editItem, fetchData }) {
   const { token } = useSelector((state) => state.user);
@@ -77,6 +79,28 @@ function Edit({ showModal, setShowModal, editItem, fetchData }) {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            <div className="form-group mb-3">
+              <label>Latitude (optional)</label>
+              <input
+                name="shopLat"
+                className="form-control"
+                value={state.shopLat}
+                onChange={changeHandler}
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+            <div className="form-group mb-3">
+              <label>Longitude (optional)</label>
+              <input
+                name="shopLong"
+                className="form-control"
+                value={state.shopLong}
+                onChange={changeHandler}
+                required
+                disabled={isSubmitting}
+              />
+            </div>
             <div className="form-group mb-3">
               <label>Status (optional)</label>
               <select

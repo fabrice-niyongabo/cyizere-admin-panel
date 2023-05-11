@@ -1,6 +1,6 @@
 // project import
 import products from "./products";
-import markets from "./markets";
+import suppliers from "./suppliers";
 import dashboard from "./dashboard";
 import sales from "./sales";
 import fees from "./fees";
@@ -12,7 +12,7 @@ import payments from "./payments";
 const menuItems = {
   items: [
     dashboard,
-    markets,
+    suppliers,
     products,
     payments,
     sales,

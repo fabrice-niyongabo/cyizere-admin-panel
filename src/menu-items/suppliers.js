@@ -6,13 +6,13 @@ import { ShoppingOutlined } from "@ant-design/icons";
 const dashboard = {
   id: "marketsGroup",
   type: "group",
-  title: "Markets",
+  title: "Suppliers",
   children: [
     {
-      id: "markets",
-      title: "Markets",
+      id: "suppliers",
+      title: "All Suppliers",
       type: "item",
-      url: "/dashboard/markets",
+      url: "/dashboard/suppliers",
       icon: ShoppingOutlined,
       breadcrumbs: false,
     },

@@ -64,9 +64,8 @@ const Suppliers = () => {
                       <tr>
                         <th>#</th>
                         <th>Image</th>
-                        <th>Names</th>
-                        <th>Email</th>
-                        <th>Phone</th>
+                        <th>Owner</th>
+                        <th>Shop</th>
                         <th>ID No</th>
                         <th>Status</th>
                         <th>Verification</th>
@@ -93,9 +92,15 @@ const Suppliers = () => {
                               <UserOutlined style={{ fontSize: 50 }} />
                             )}
                           </td>
-                          <td>{item.names}</td>
-                          <td>{item.email}</td>
-                          <td>{item.phone}</td>
+                          <td>
+                            <p className="m-0">{item.names}</p>
+                            <p className="m-0">{item.phone}</p>
+                            <p className="m-0">{item.email}</p>
+                          </td>
+                          <td>
+                            {item.shopName}
+                            <p className="m-0">{item.shopAddress}</p>
+                          </td>
                           <td>
                             {item.idNumber}
                             <br />
