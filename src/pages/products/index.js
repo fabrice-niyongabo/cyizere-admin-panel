@@ -16,6 +16,7 @@ import { EditOutlined, CloseOutlined } from "@ant-design/icons";
 import Edit from "./edit";
 import Confirmation from "../../controllers/confirmation";
 import Prices from "./prices/index";
+import Featured from "./featured";
 
 const initialState = {
   marketId: "",
@@ -132,7 +133,7 @@ const Products = () => {
                         <th>Description</th>
                         <th>Shop</th>
                         <th>Price Type</th>
-                        <th>Dynamic Price</th>
+                        <th>Featured</th>
                         <th>Price</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -152,6 +153,7 @@ const Products = () => {
                           <td>{item.name}</td>
                           <td>{item.description}</td>
                           <td>
+                            <p className="m-0">supplierId: {item.supplierId}</p>
                             <p className="m-0">
                               {getSupplierObj(item.supplierId)?.shopName}
                             </p>
@@ -160,7 +162,9 @@ const Products = () => {
                             </p>
                           </td>
                           <td>{item.priceType}</td>
-                          <td>{item.supportsDynamicPrice ? "Yes" : "No"}</td>
+                          <td>
+                            <Featured item={item} />
+                          </td>
                           <td>
                             {item.priceType == "single" ? (
                               currencyFormatter(item.singlePrice)
