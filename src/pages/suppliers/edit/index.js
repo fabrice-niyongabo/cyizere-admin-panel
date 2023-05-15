@@ -14,6 +14,7 @@ const initialState = {
   sendNotification: false,
   shopLat: "",
   shopLong: "",
+  hasGift: false,
 };
 function Edit({ showModal, setShowModal, editItem, fetchData }) {
   const { token } = useSelector((state) => state.user);
@@ -148,6 +149,20 @@ function Edit({ showModal, setShowModal, editItem, fetchData }) {
                 name="isDisabled"
                 className="form-select"
                 value={state.isDisabled}
+                onChange={changeHandler}
+                required
+                disabled={isSubmitting}
+              >
+                <option value={true}>Yes</option>
+                <option value={false}>No</option>
+              </select>
+            </div>
+            <div className="form-group mb-3">
+              <label>Gift Option (optional)</label>
+              <select
+                name="hasGift"
+                className="form-select"
+                value={state.hasGift}
                 onChange={changeHandler}
                 required
                 disabled={isSubmitting}

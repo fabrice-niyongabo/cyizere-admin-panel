@@ -71,6 +71,7 @@ const Suppliers = () => {
                         <th>Verification</th>
                         <th>Verification Status</th>
                         <th>Disabled</th>
+                        <th>Gift Option</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -142,6 +143,13 @@ const Suppliers = () => {
                             }
                           >
                             {item.isDisabled ? "YES" : "NO"}
+                          </td>
+                          <td
+                            className={
+                              item.hasGift ? "text-primary" : "text-danger"
+                            }
+                          >
+                            {item.hasGift ? "YES" : "NO"}
                           </td>
                           <td>
                             <EditOutlined
