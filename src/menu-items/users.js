@@ -13,13 +13,13 @@ const pages = {
       url: "/dashboard/users",
       icon: AlignLeftOutlined,
     },
-    // {
-    //   id: "riders",
-    //   title: "Riders",
-    //   type: "item",
-    //   url: "/dashboard/riders",
-    //   icon: ProfileOutlined,
-    // },
+    {
+      id: "riders",
+      title: "Riders",
+      type: "item",
+      url: "/dashboard/riders",
+      icon: ProfileOutlined,
+    },
   ],
 };
 

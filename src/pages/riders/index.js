@@ -64,7 +64,6 @@ const Riders = () => {
                     <thead>
                       <tr>
                         <th>#</th>
-                        <th>Image</th>
                         <th>Names</th>
                         <th>Email</th>
                         <th>Phone</th>
@@ -82,20 +81,6 @@ const Riders = () => {
                       {users.map((item, index) => (
                         <tr key={index}>
                           <td>{item.riderId}</td>
-                          <td>
-                            {item.image.trim() !== "" ? (
-                              <img
-                                src={FILE_URL + item.image}
-                                style={{
-                                  width: 50,
-                                  height: 50,
-                                  borderRadius: 100,
-                                }}
-                              />
-                            ) : (
-                              <UserOutlined style={{ fontSize: 50 }} />
-                            )}
-                          </td>
                           <td>{item.names}</td>
                           <td>{item.email}</td>
                           <td>{item.phone}</td>
