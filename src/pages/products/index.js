@@ -50,6 +50,11 @@ const Products = () => {
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [priceProduct, setPriceProduct] = useState(null);
 
+  //
+  const [supplierFilter, setSupplierFilter] = useState("");
+  //
+  const [productsToShow, setProductsToshow] = useState([]);
+
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
@@ -103,6 +108,20 @@ const Products = () => {
     fetchSuppliers();
   }, []);
 
+  useEffect(() => {
+    let sub = true;
+    if (sub) {
+      let res = products;
+      if (supplierFilter !== "") {
+        res = res.filter((item) => item.supplierId == supplierFilter);
+      }
+      setProductsToshow(res);
+    }
+    return () => {
+      sub = false;
+    };
+  }, [products, supplierFilter]);
+
   const getSupplierObj = (supplierId) => {
     const sup = suppliers.find((item) => item.supplierId == supplierId);
     if (sup) {
@@ -117,7 +136,33 @@ const Products = () => {
         <Grid item md={12}>
           <Card>
             <Card.Header>
-              <strong>Products List</strong>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <strong> Products List ({productsToShow.length})</strong>
+                <div>
+                  <Grid container>
+                    <Grid item md={4} sm={6} xs={6}>
+                      <select
+                        value={supplierFilter}
+                        onChange={(e) => setSupplierFilter(e.target.value)}
+                        title="Suppliers Filter"
+                      >
+                        <option value="">All suppliers</option>
+                        {suppliers.map((item, index) => (
+                          <option value={item.supplierId} key={index}>
+                            {item.shopName} #{item.supplierId}
+                          </option>
+                        ))}
+                      </select>
+                    </Grid>
+                  </Grid>
+                </div>
+              </div>
             </Card.Header>
             <Card.Body>
               {isLoading ? (
@@ -140,7 +185,7 @@ const Products = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {products.map((item, index) => (
+                      {productsToShow.map((item, index) => (
                         <tr key={index}>
                           <td>{index + 1}</td>
                           <td>
