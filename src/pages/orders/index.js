@@ -233,7 +233,7 @@ const Orders = () => {
                     <Grid item md={4} sm={6} xs={6}>
                       <input
                         type="date"
-                        value={fromDateFilter}
+                        value={toDateFilter}
                         onChange={(e) => setToDateFilter(e.target.value)}
                         title="To Date Filter"
                       />

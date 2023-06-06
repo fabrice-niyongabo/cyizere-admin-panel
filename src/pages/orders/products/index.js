@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
 import Loader from "../../loader";
-import { useSelector } from "react-redux";
-import { Modal, Spinner } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { FILE_URL } from "../../../constants";
 function Products({ showModal, setShowModal, order, products, isLoading }) {
   const [productsToShow, setProductsToShow] = useState([]);
