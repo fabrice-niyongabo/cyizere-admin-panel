@@ -1,7 +1,7 @@
 import { Card } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { BACKEND_URL } from "../../constants";
+import { APP_COLORS, BACKEND_URL } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import {
   currencyFormatter,
@@ -12,6 +12,7 @@ import {
 import { Grid } from "@mui/material";
 import Loader from "../loader";
 import { fetchOrders } from "../../actions/orders";
+import Products from "./products";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -27,8 +28,47 @@ const Orders = () => {
   const [dateFilter, setDateFilter] = useState("");
   //
 
+  const [selectedOrder, setSelectedOrder] = useState(undefined);
+  const [showProducts, setShowProducts] = useState(false);
+
+  //
+  const [isLoadingSuppliers, setIsLoadingSuppliers] = useState(false);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(false);
+  const [suppliers, setSuppliers] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+
+  const fetchSuppliers = () => {
+    setIsLoadingSuppliers(true);
+    axios
+      .get(BACKEND_URL + "/suppliers", setHeaders(token))
+      .then((res) => {
+        setIsLoadingSuppliers(false);
+        setSuppliers(res.data.suppliers);
+      })
+      .catch((error) => {
+        setIsLoadingSuppliers(false);
+        errorHandler(error);
+      });
+  };
+
+  const fetchProducts = () => {
+    setIsLoadingProducts(true);
+    axios
+      .get(BACKEND_URL + "/products/admin/", setHeaders(token))
+      .then((res) => {
+        setIsLoadingProducts(false);
+        setAllProducts(res.data.products);
+      })
+      .catch((error) => {
+        setIsLoadingProducts(false);
+        errorHandler(error);
+      });
+  };
+
   useEffect(() => {
     dispatch(fetchOrders());
+    fetchSuppliers();
+    fetchProducts();
   }, []);
 
   useEffect(() => {
@@ -45,20 +85,18 @@ const Orders = () => {
       let s2 = 0;
       for (let i = 0; i < success.length; i++) {
         s1 +=
-          Number(success[i].cartTotalAmount) + Number(success[i].deliveryFees);
-        // +
-        // Number(success[i].systemFees) +
-        // Number(success[i].packagingFees) +
-        // Number(success[i].agentFees);
+          Number(success[i].cartTotalAmount) +
+          Number(success[i].deliveryFees) +
+          Number(success[i].systemFees) +
+          Number(success[i].packagingFees);
       }
 
       for (let i = 0; i < failed.length; i++) {
         s2 +=
-          Number(failed[i].cartTotalAmount) + Number(failed[i].deliveryFees);
-        // +
-        // Number(failed[i].systemFees) +
-        // Number(failed[i].packagingFees) +
-        // Number(failed[i].agentFees);
+          Number(failed[i].cartTotalAmount) +
+          Number(failed[i].deliveryFees) +
+          Number(failed[i].systemFees) +
+          Number(failed[i].packagingFees);
       }
       setSuccessTotal(s1);
       setFailedTotal(s2);
@@ -168,7 +206,7 @@ const Orders = () => {
                     <thead>
                       <tr>
                         <th>OrderId</th>
-                        <th>Market</th>
+                        <th>Supplier</th>
                         <th>Products</th>
                         <th>Subtotal</th>
                         <th>Total Amount</th>
@@ -187,15 +225,28 @@ const Orders = () => {
                         <tr>
                           <td>{item.id}</td>
                           <td>Market</td>
-                          <td>Products</td>
+                          <td>
+                            <span
+                              style={{
+                                color: APP_COLORS.lightBlue,
+                                textDecoration: "underline",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => {
+                                setSelectedOrder(item);
+                                setShowProducts(true);
+                              }}
+                            >
+                              {item.cartItems.length} products
+                            </span>
+                          </td>
                           <td>{currencyFormatter(item.cartTotalAmount)} RWF</td>
                           <td>
                             {currencyFormatter(
                               Number(item.cartTotalAmount) +
                                 Number(item.deliveryFees) +
                                 Number(item.systemFees) +
-                                Number(item.packagingFees) +
-                                Number(item.agentFees)
+                                Number(item.packagingFees)
                             )}{" "}
                             RWF
                           </td>
@@ -282,6 +333,13 @@ const Orders = () => {
           </Card>
         </Grid>
       </Grid>
+      <Products
+        order={selectedOrder}
+        showModal={showProducts}
+        setShowModal={setShowProducts}
+        isLoading={isLoadingProducts}
+        products={allProducts}
+      />
     </>
   );
 };
