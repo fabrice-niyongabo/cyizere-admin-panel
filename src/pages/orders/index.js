@@ -25,7 +25,9 @@ const Orders = () => {
   //
   const [deliveryStatusFilter, setDeliveryStatusFilter] = useState("");
   const [paymentStatusFilter, setPaymentStatusFilter] = useState("");
-  const [dateFilter, setDateFilter] = useState("");
+  const [fromDateFilter, setFromDateFilter] = useState("");
+  const [toDateFilter, setToDateFilter] = useState("");
+  const [supplierFilter, setSupplierFilter] = useState("");
   //
 
   const [selectedOrder, setSelectedOrder] = useState(undefined);
@@ -117,6 +119,9 @@ const Orders = () => {
       //       item.model.toLowerCase().includes(keyWord.toLowerCase())
       //   );
       // }
+      if (supplierFilter !== "") {
+        res = res.filter((item) => item.supplierId == supplierFilter);
+      }
       if (paymentStatusFilter !== "") {
         res = res.filter((item) => item.paymentStatus === paymentStatusFilter);
       }
@@ -126,11 +131,14 @@ const Orders = () => {
         );
       }
 
-      if (dateFilter !== "") {
+      if (fromDateFilter !== "") {
         res = res.filter(
-          (item) =>
-            new Date(item.createdAt).toLocaleDateString() ===
-            new Date(dateFilter).toLocaleDateString()
+          (item) => new Date(item.createdAt) >= new Date(fromDateFilter)
+        );
+      }
+      if (toDateFilter !== "") {
+        res = res.filter(
+          (item) => new Date(item.createdAt) <= new Date(toDateFilter)
         );
       }
       setOrdersToshow(res);
@@ -138,7 +146,23 @@ const Orders = () => {
     return () => {
       sub = false;
     };
-  }, [paymentStatusFilter, deliveryStatusFilter, dateFilter, orders]);
+  }, [
+    paymentStatusFilter,
+    deliveryStatusFilter,
+    fromDateFilter,
+    toDateFilter,
+    orders,
+    supplierFilter,
+  ]);
+
+  const getSupplierShopName = (id) => {
+    const sup = suppliers.find((item) => item.supplierId == id);
+    if (sup) {
+      return sup.shopName;
+    } else {
+      return "-";
+    }
+  };
 
   return (
     <>
@@ -155,45 +179,67 @@ const Orders = () => {
               >
                 <strong>Orders List ({orders.length})</strong>
                 <div>
-                  <table>
-                    <tr>
-                      <td>
-                        <select
-                          value={deliveryStatusFilter}
-                          onChange={(e) =>
-                            setDeliveryStatusFilter(e.target.value)
-                          }
-                        >
-                          <option value="">Delivery Status</option>
-                          <option value="PENDING">PENDING</option>
-                          <option value="WAITING">WAITING</option>
-                          <option value="FAILED">FAILED</option>
-                          <option value="SUCCESS">SUCCESS</option>
-                          <option value="COMPLETED">COMPLETED</option>
-                        </select>
-                      </td>
-                      <td>
-                        <select
-                          value={paymentStatusFilter}
-                          onChange={(e) =>
-                            setPaymentStatusFilter(e.target.value)
-                          }
-                        >
-                          <option value="">Payment Status</option>
-                          <option value="PENDING">PENDING</option>
-                          <option value="SUCCESS">SUCCESS</option>
-                          <option value="FAILED">FAILED</option>
-                        </select>
-                      </td>
-                      <td>
-                        <input
-                          type="date"
-                          value={dateFilter}
-                          onChange={(e) => setDateFilter(e.target.value)}
-                        />
-                      </td>
-                    </tr>
-                  </table>
+                  <Grid container>
+                    <Grid item md={4} sm={6} xs={6}>
+                      <select
+                        value={supplierFilter}
+                        onChange={(e) => setSupplierFilter(e.target.value)}
+                        title="Suppliers Filter"
+                      >
+                        <option value="">All suppliers</option>
+                        {suppliers.map((item, index) => (
+                          <option value={item.supplierId} key={index}>
+                            {item.shopName} #{item.supplierId}
+                          </option>
+                        ))}
+                      </select>
+                    </Grid>
+                    <Grid item md={4} sm={6} xs={6}>
+                      <select
+                        value={deliveryStatusFilter}
+                        onChange={(e) =>
+                          setDeliveryStatusFilter(e.target.value)
+                        }
+                        title="Delivery Status Filter"
+                      >
+                        <option value="">Delivery Status</option>
+                        <option value="PENDING">PENDING</option>
+                        <option value="WAITING">WAITING</option>
+                        <option value="FAILED">FAILED</option>
+                        <option value="SUCCESS">SUCCESS</option>
+                        <option value="COMPLETED">COMPLETED</option>
+                      </select>
+                    </Grid>
+                    <Grid item md={4} sm={6} xs={6}>
+                      <select
+                        value={paymentStatusFilter}
+                        onChange={(e) => setPaymentStatusFilter(e.target.value)}
+                        title="Payment Status Filter"
+                      >
+                        <option value="">Payment Status</option>
+                        <option value="PENDING">PENDING</option>
+                        <option value="SUCCESS">SUCCESS</option>
+                        <option value="FAILED">FAILED</option>
+                      </select>
+                    </Grid>
+                    <Grid item md={4} sm={6} xs={6}>
+                      <input
+                        type="date"
+                        value={fromDateFilter}
+                        onChange={(e) => setFromDateFilter(e.target.value)}
+                        title="From Date Filter"
+                      />
+                    </Grid>
+                    <Grid item md={4} sm={6} xs={6}>
+                      <input
+                        type="date"
+                        value={fromDateFilter}
+                        onChange={(e) => setToDateFilter(e.target.value)}
+                        title="To Date Filter"
+                      />
+                    </Grid>
+                    <Grid item md={4} sm={6} xs={6}></Grid>
+                  </Grid>
                 </div>
               </div>
             </Card.Header>
@@ -206,7 +252,7 @@ const Orders = () => {
                     <thead>
                       <tr>
                         <th>OrderId</th>
-                        <th>Supplier</th>
+                        <th>Shop</th>
                         <th>Products</th>
                         <th>Subtotal</th>
                         <th>Total Amount</th>
@@ -215,7 +261,6 @@ const Orders = () => {
                         <th>System Fees</th>
                         <th>Packaging Fees</th>
                         <th>Client</th>
-                        <th>Agent</th>
                         <th>Rider</th>
                         <th>Date</th>
                       </tr>
@@ -224,7 +269,10 @@ const Orders = () => {
                       {ordersToShow.map((item, index) => (
                         <tr>
                           <td>{item.id}</td>
-                          <td>Market</td>
+                          <td>
+                            #{item.supplierId}{" "}
+                            {getSupplierShopName(item.supplierId)}
+                          </td>
                           <td>
                             <span
                               style={{
@@ -294,15 +342,6 @@ const Orders = () => {
                             </p>
                             <p style={{ margin: 0 }}>
                               Phone: {item.client?.phone}
-                            </p>
-                          </td>
-                          <td>
-                            <p style={{ margin: 0 }}>{item.agent?.names}</p>
-                            <p style={{ margin: 0 }}>
-                              Email: {item.agent?.email}
-                            </p>
-                            <p style={{ margin: 0 }}>
-                              Phone: {item.agent?.phone}
                             </p>
                           </td>
                           <td>
