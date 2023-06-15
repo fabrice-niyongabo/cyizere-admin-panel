@@ -45,6 +45,7 @@ import { currencyFormatter, errorHandler, setHeaders } from "../../helpers";
 import axios from "axios";
 import { fetchPaymentList } from "../../actions/supplierpayments";
 import { fetchNotifications } from "../../actions/notifications";
+import SystemStatus from "./system-status";
 
 // avatar style
 const avatarSX = {
@@ -147,16 +148,9 @@ const DashboardDefault = () => {
           extra="/dashboard/transactions"
         />
       </Grid>
-      {/* <Grid item xs={12} sm={6} md={4} lg={3}>
-        <AnalyticEcommerce
-          title="Supplier Payments"
-          count={
-            payments.filter((item) => item.paymentStatus === "PENDING").length
-          }
-          color="warning"
-          extra="/dashboard/supplierspayment"
-        />
-      </Grid> */}
+      <Grid item xs={12} sm={6} md={4} lg={3}>
+        <SystemStatus />
+      </Grid>
 
       <Grid
         item
