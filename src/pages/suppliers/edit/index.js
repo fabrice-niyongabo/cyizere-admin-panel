@@ -131,6 +131,7 @@ function Edit({ showModal, setShowModal, editItem, fetchData }) {
                 value={state.verificationStatus}
                 onChange={changeHandler}
                 disabled={isSubmitting}
+                required
               >
                 <option value="In Review">In Review</option>
                 <option value="Rejected">Rejected</option>
@@ -144,7 +145,6 @@ function Edit({ showModal, setShowModal, editItem, fetchData }) {
                 className="form-control"
                 value={state.verificationMessage}
                 onChange={changeHandler}
-                required
                 disabled={isSubmitting}
                 placeholder="Add description for verification status you specified"
               />
