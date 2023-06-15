@@ -22,6 +22,13 @@ function Edit({ showModal, setShowModal, editItem, fetchData }) {
   const [isSubmitting, setSubmitting] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (
+      state.verificationStatus === "Rejected" &&
+      state.verificationMessage.trim() === ""
+    ) {
+      toastMessage("errror", "Please enter rejection reason");
+      return;
+    }
     setSubmitting(true);
     Axios.put(BACKEND_URL + "/suppliers/", state, setHeaders(token))
       .then((res) => {
@@ -123,7 +130,6 @@ function Edit({ showModal, setShowModal, editItem, fetchData }) {
                 className="form-select"
                 value={state.verificationStatus}
                 onChange={changeHandler}
-                required
                 disabled={isSubmitting}
               >
                 <option value="In Review">In Review</option>
