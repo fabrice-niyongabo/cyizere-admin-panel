@@ -10,7 +10,7 @@ function Products({ showModal, setShowModal, order, products, isLoading }) {
       const lst = [];
       for (let i = 0; i < order.cartItems.length; i++) {
         const prod = products.find(
-          (item) => item.pId == order.cartItems[0].productId
+          (item) => item.pId == order.cartItems[i].productId
         );
         if (prod) {
           lst.push(prod);
