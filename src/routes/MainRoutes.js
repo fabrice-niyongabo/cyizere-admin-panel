@@ -51,7 +51,7 @@ const MainRoutes = {
       element: <DashboardDefault />,
     },
     {
-      path: "/notifications",
+      path: "/dashboard/notifications",
       element: <Notifications />,
     },
     {
