@@ -25,7 +25,7 @@ const dashboard = {
       id: "notifications",
       title: "Notifications",
       type: "item",
-      url: "/notifications",
+      url: "/dashboard/notifications",
       icon: icons.BellOutlined,
       breadcrumbs: false,
     },
