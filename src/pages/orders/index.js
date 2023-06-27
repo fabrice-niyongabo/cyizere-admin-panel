@@ -267,7 +267,7 @@ const Orders = () => {
                     </thead>
                     <tbody>
                       {ordersToShow.map((item, index) => (
-                        <tr>
+                        <tr key={index}>
                           <td>{item.id}</td>
                           <td>
                             #{item.supplierId}{" "}

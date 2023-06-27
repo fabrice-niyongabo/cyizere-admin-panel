@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Loader from "../../loader";
 import { Modal } from "react-bootstrap";
 import { FILE_URL } from "../../../constants";
+import { currencyFormatter } from "../../../helpers";
 function Products({ showModal, setShowModal, order, products, isLoading }) {
   const [productsToShow, setProductsToShow] = useState([]);
 
@@ -52,7 +53,16 @@ function Products({ showModal, setShowModal, order, products, isLoading }) {
                           width={70}
                         />
                       </td>
-                      <td>{item.name}</td>
+                      <td>
+                        <div className="p-2">
+                          <b>{item.name}</b>
+                          <p className="m-0">
+                            {order.cartItems[index]?.quantity}x
+                            {currencyFormatter(order.cartItems[index]?.price)}{" "}
+                            RWF
+                          </p>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
