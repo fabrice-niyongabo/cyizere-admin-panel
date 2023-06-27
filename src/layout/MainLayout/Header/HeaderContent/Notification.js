@@ -24,6 +24,8 @@ import {
 import MainCard from "../../../../components/MainCard";
 import Transitions from "../../../../components/@extended/Transitions";
 
+import HtmlParser from "react-html-parser";
+
 // assets
 import {
   BellOutlined,
@@ -35,6 +37,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchNotifications } from "../../../../actions/notifications";
+import { useNavigate } from "react-router";
 
 // sx styles
 const avatarSX = {
@@ -60,6 +63,7 @@ const Notification = () => {
   const { notifications } = useSelector((state) => state.notifications);
   const theme = useTheme();
   const matchesXs = useMediaQuery(theme.breakpoints.down("md"));
+  const navigate = useNavigate();
 
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -160,8 +164,11 @@ const Notification = () => {
                       },
                     }}
                   >
-                    {notifications.map((item, index) => (
-                      <ListItemButton key={index}>
+                    {notifications.slice(0, 4).map((item, index) => (
+                      <ListItemButton
+                        key={index}
+                        onClick={() => navigate("/dashboard/notifications")}
+                      >
                         <ListItemAvatar>
                           <Avatar
                             sx={{
@@ -178,14 +185,18 @@ const Notification = () => {
                               <Typography component="span" variant="subtitle1">
                                 {item.title}
                               </Typography>{" "}
-                              {item.message}
+                              {HtmlParser(item.message)}
                             </Typography>
                           }
-                          secondary="5 August"
+                          secondary={new Date(
+                            item.createdAt
+                          ).toLocaleDateString()}
                         />
                         <ListItemSecondaryAction>
                           <Typography variant="caption" noWrap>
-                            6:00 PM
+                            {`${new Date(item.createdAt).getHours()}:${new Date(
+                              item.createdAt
+                            ).getMinutes()}`}
                           </Typography>
                         </ListItemSecondaryAction>
                       </ListItemButton>
@@ -195,6 +206,7 @@ const Notification = () => {
                       sx={{ textAlign: "center", py: `${12}px !important` }}
                     >
                       <ListItemText
+                        onClick={() => navigate("/dashboard/notifications")}
                         primary={
                           <Typography variant="h6" color="primary">
                             View All
