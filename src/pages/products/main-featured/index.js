@@ -4,15 +4,15 @@ import { BACKEND_URL } from "../../../constants";
 import { errorHandler, setHeaders, toastMessage } from "../../../helpers";
 import { useSelector } from "react-redux";
 
-function Featured({ item }) {
-  const [isChecked, setIsChecked] = useState(item.isFeatured);
+function MainFeatured({ item }) {
+  const [isChecked, setIsChecked] = useState(item.isMainFeatured);
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useSelector((state) => state.user);
   const handleClick = () => {
     setIsChecked(!isChecked);
     axios
       .put(
-        BACKEND_URL + "/products/featured",
+        BACKEND_URL + "/products/mainfeatured",
         { ...item, isChecked: !isChecked },
         setHeaders(token)
       )
@@ -36,4 +36,4 @@ function Featured({ item }) {
   );
 }
 
-export default Featured;
+export default MainFeatured;

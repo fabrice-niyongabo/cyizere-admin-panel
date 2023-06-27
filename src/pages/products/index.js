@@ -17,6 +17,7 @@ import Edit from "./edit";
 import Confirmation from "../../controllers/confirmation";
 import Prices from "./prices/index";
 import Featured from "./featured";
+import MainFeatured from "./main-featured";
 
 const initialState = {
   marketId: "",
@@ -178,6 +179,7 @@ const Products = () => {
                         <th>Description</th>
                         <th>Shop</th>
                         <th>Price Type</th>
+                        <th>Main Featured</th>
                         <th>Featured</th>
                         <th>Price</th>
                         <th>Status</th>
@@ -207,6 +209,9 @@ const Products = () => {
                             </p>
                           </td>
                           <td>{item.priceType}</td>
+                          <td>
+                            <MainFeatured item={item} />
+                          </td>
                           <td>
                             <Featured item={item} />
                           </td>
