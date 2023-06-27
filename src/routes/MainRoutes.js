@@ -36,6 +36,7 @@ const Orders = Loadable(lazy(() => import("../pages/orders")));
 const Profile = Loadable(lazy(() => import("../pages/profile")));
 const TrackRiders = Loadable(lazy(() => import("../pages/track-rider")));
 const Banners = Loadable(lazy(() => import("../pages/banners")));
+const Notifications = Loadable(lazy(() => import("../pages/notifications")));
 
 const MainRoutes = {
   path: "/dashboard",
@@ -48,6 +49,10 @@ const MainRoutes = {
     {
       path: "/dashboard",
       element: <DashboardDefault />,
+    },
+    {
+      path: "/notifications",
+      element: <Notifications />,
     },
     {
       path: "/dashboard/markets",
