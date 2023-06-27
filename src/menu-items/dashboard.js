@@ -22,8 +22,8 @@ const dashboard = {
       breadcrumbs: false,
     },
     {
-      id: "dashboard",
-      title: "Dashboard",
+      id: "notifications",
+      title: "Notifications",
       type: "item",
       url: "/notifications",
       icon: icons.BellOutlined,
