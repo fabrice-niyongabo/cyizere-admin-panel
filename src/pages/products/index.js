@@ -53,6 +53,7 @@ const Products = () => {
 
   //
   const [supplierFilter, setSupplierFilter] = useState("");
+  const [searchKeyword, setSearchKeyword] = useState("");
   //
   const [productsToShow, setProductsToshow] = useState([]);
 
@@ -132,6 +133,11 @@ const Products = () => {
     let sub = true;
     if (sub) {
       let res = products;
+      if (searchKeyword.trim() !== "") {
+        res = res.filter((item) =>
+          item.name.toLowerCase().includes(searchKeyword.toLowerCase())
+        );
+      }
       if (supplierFilter !== "") {
         res = res.filter((item) => item.supplierId == supplierFilter);
       }
@@ -140,7 +146,7 @@ const Products = () => {
     return () => {
       sub = false;
     };
-  }, [products, supplierFilter]);
+  }, [products, supplierFilter, searchKeyword]);
 
   const getSupplierObj = (supplierId) => {
     const sup = suppliers.find((item) => item.supplierId == supplierId);
@@ -198,22 +204,27 @@ const Products = () => {
               >
                 <strong> Products List ({productsToShow.length})</strong>
                 <div>
-                  <Grid container>
-                    <Grid item md={4} sm={6} xs={6}>
-                      <select
-                        value={supplierFilter}
-                        onChange={(e) => setSupplierFilter(e.target.value)}
-                        title="Suppliers Filter"
-                      >
-                        <option value="">All suppliers</option>
-                        {suppliers.map((item, index) => (
-                          <option value={item.supplierId} key={index}>
-                            {item.shopName} #{item.supplierId}
-                          </option>
-                        ))}
-                      </select>
-                    </Grid>
-                  </Grid>
+                  <input
+                    type="text"
+                    title="Search product"
+                    placeholder="Search product"
+                    style={{ minWidth: 100 }}
+                    onChange={(e) => setSearchKeyword(e.target.value)}
+                    value={searchKeyword}
+                  />
+
+                  <select
+                    value={supplierFilter}
+                    onChange={(e) => setSupplierFilter(e.target.value)}
+                    title="Suppliers Filter"
+                  >
+                    <option value="">All suppliers</option>
+                    {suppliers.map((item, index) => (
+                      <option value={item.supplierId} key={index}>
+                        {item.shopName} #{item.supplierId}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </Card.Header>
