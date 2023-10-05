@@ -3,12 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { APP_COLORS, BACKEND_URL } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  currencyFormatter,
-  errorHandler,
-  setHeaders,
-  toastMessage,
-} from "../../helpers";
+import { currencyFormatter, errorHandler, setHeaders } from "../../helpers";
 import { Grid } from "@mui/material";
 import Loader from "../loader";
 import { fetchOrders } from "../../actions/orders";
@@ -332,6 +327,10 @@ const Orders = () => {
                             <p style={{ margin: 0 }}>
                               {currencyFormatter(item.deliveryFees)} RWF
                             </p>
+                            <p style={{ margin: 0, fontWeight: "bold" }}>
+                              Code:
+                            </p>
+                            <p style={{ margin: 0 }}>{item.deliveryCode}</p>
                           </td>
                           <td>{currencyFormatter(item.systemFees)} RWF</td>
                           <td>{currencyFormatter(item.packagingFees)} RWF</td>
