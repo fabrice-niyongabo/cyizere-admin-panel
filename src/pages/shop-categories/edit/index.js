@@ -16,7 +16,7 @@ function Edit({ showModal, setShowModal, editItem, fetchData }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitting(true);
-    Axios.put(BACKEND_URL + "/categories/", state, setHeaders(token))
+    Axios.put(BACKEND_URL + "/shopcategories/", state, setHeaders(token))
       .then((res) => {
         toastMessage("success", res.data.msg);
         setSubmitting(false);
