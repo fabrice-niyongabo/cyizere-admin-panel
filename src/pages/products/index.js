@@ -90,6 +90,17 @@ const Products = () => {
       });
   };
 
+  const fetchCategories = () => {
+    axios
+      .get(BACKEND_URL + "/productcategories", setHeaders(token))
+      .then((res) => {
+        setCategories(res.data.categories);
+      })
+      .catch((error) => {
+        errorHandler(error);
+      });
+  };
+
   const fetchData = () => {
     setIsLoading(true);
     axios
@@ -107,6 +118,7 @@ const Products = () => {
   useEffect(() => {
     fetchData();
     fetchSuppliers();
+    fetchCategories();
   }, []);
 
   useEffect(() => {

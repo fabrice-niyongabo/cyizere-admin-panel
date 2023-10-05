@@ -17,15 +17,9 @@ const initialState = {
   kName: "",
   kDescription: "",
   image: "",
+  categoryId: 0,
 };
-function Edit({
-  showModal,
-  setShowModal,
-  editItem,
-  fetchData,
-  markets,
-  categories,
-}) {
+function Edit({ showModal, setShowModal, editItem, fetchData, categories }) {
   const { token } = useSelector((state) => state.user);
   const [state, setState] = useState(initialState);
   const [isSubmitting, setSubmitting] = useState(false);
@@ -86,6 +80,23 @@ function Edit({
                 required
                 disabled={isSubmitting}
               />
+            </div>
+            <div className="form-group mb-3">
+              <label>Category</label>
+              <select
+                name="categoryId"
+                className="form-select"
+                value={state.categoryId}
+                onChange={changeHandler}
+                disabled={isSubmitting}
+                required
+              >
+                {categories.map((item, index) => (
+                  <option key={index} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className="form-group mb-3">
               <label>Pricing Type</label>
