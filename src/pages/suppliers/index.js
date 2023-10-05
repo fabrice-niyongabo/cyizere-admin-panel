@@ -19,6 +19,7 @@ import {
   WhatsAppOutlined,
 } from "@ant-design/icons";
 import Edit from "./edit";
+import Confirmation from "../../controllers/confirmation";
 
 const Suppliers = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -28,6 +29,13 @@ const Suppliers = () => {
 
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState(null);
+
+  //updating image
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(undefined);
+  const [updatedImage, setUpdatedImage] = useState(undefined);
+  const [showUpdateImageAlert, setShowUpdateImageAlert] = useState(false);
+  const updateImageRef = useRef(null);
 
   const fetchData = () => {
     setIsLoading(true);
@@ -51,6 +59,39 @@ const Suppliers = () => {
         setShopCategories(res.data.categories);
       })
       .catch((error) => {
+        errorHandler(error);
+      });
+  };
+
+  const updateImage = () => {
+    if (selectedImage === undefined || updatedImage === undefined) {
+      return;
+    }
+    setIsUpdating(true);
+    const formData = new FormData();
+    formData.append("file", updatedImage);
+    formData.append("supplierId", selectedImage.supplierId);
+    axios
+      .put(BACKEND_URL + "/suppliers/image", formData, setHeaders(token))
+      .then((res) => {
+        setIsUpdating(false);
+        toastMessage("success", res.data.msg);
+        const newData = users;
+        const index = newData.findIndex(
+          (item) => item.supplierId === selectedImage.supplierId
+        );
+        if (index > -1) {
+          newData[index] = { ...newData[index], shopImage: res.data.image };
+          setUsers(newData);
+        }
+        setSelectedImage(undefined);
+        updateImageRef.current.value = "";
+      })
+      .catch((error) => {
+        setSelectedImage(undefined);
+        setUpdatedImage(undefined);
+        updateImageRef.current.value = "";
+        setIsUpdating(false);
         errorHandler(error);
       });
   };
@@ -105,6 +146,34 @@ const Suppliers = () => {
                               />
                             ) : (
                               <UserOutlined style={{ fontSize: 50 }} />
+                            )}
+                            <input
+                              type="file"
+                              name="image"
+                              className="d-none"
+                              onChange={(e) => {
+                                setUpdatedImage(e.target.files[0]);
+                                setShowUpdateImageAlert(true);
+                              }}
+                              required
+                              ref={updateImageRef}
+                            />
+                            {isUpdating && selectedImage?.pId === item?.pId ? (
+                              <Spinner size="sm" />
+                            ) : (
+                              <span
+                                style={{
+                                  display: "inline-block",
+                                  cursor: "pointer",
+                                  padding: 5,
+                                }}
+                                onClick={() => {
+                                  setSelectedImage(item);
+                                  updateImageRef.current.click();
+                                }}
+                              >
+                                <EditOutlined />
+                              </span>
                             )}
                           </td>
                           <td>
@@ -192,6 +261,12 @@ const Suppliers = () => {
         editItem={editItem}
         fetchData={fetchData}
         shopCategories={shopCategories}
+      />
+      <Confirmation
+        title="Do you want to update this image?"
+        setShowAlert={setShowUpdateImageAlert}
+        showAlert={showUpdateImageAlert}
+        callback={updateImage}
       />
     </>
   );
