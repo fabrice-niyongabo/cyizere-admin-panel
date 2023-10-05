@@ -24,6 +24,7 @@ const Suppliers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useSelector((state) => state.user);
   const [users, setUsers] = useState([]);
+  const [shopCategories, setShopCategories] = useState([]);
 
   const [showModal, setShowModal] = useState(false);
   const [editItem, setEditItem] = useState(null);
@@ -42,8 +43,21 @@ const Suppliers = () => {
       });
   };
 
+  const fetchShopCategories = () => {
+    axios
+      .get(BACKEND_URL + "/shopcategories/", setHeaders(token))
+      .then((res) => {
+        setIsLoading(false);
+        setShopCategories(res.data.categories);
+      })
+      .catch((error) => {
+        errorHandler(error);
+      });
+  };
+
   useEffect(() => {
     fetchData();
+    fetchShopCategories();
   }, []);
 
   return (
@@ -177,6 +191,7 @@ const Suppliers = () => {
         setShowModal={setShowModal}
         editItem={editItem}
         fetchData={fetchData}
+        shopCategories={shopCategories}
       />
     </>
   );

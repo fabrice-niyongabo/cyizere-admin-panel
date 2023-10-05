@@ -15,8 +15,16 @@ const initialState = {
   shopLat: "",
   shopLong: "",
   hasGift: false,
+  shopCategoryId: 0,
+  shopName: "",
 };
-function Edit({ showModal, setShowModal, editItem, fetchData }) {
+function Edit({
+  showModal,
+  setShowModal,
+  editItem,
+  fetchData,
+  shopCategories,
+}) {
   const { token } = useSelector((state) => state.user);
   const [state, setState] = useState(initialState);
   const [isSubmitting, setSubmitting] = useState(false);
@@ -87,6 +95,34 @@ function Edit({ showModal, setShowModal, editItem, fetchData }) {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            <div className="form-group mb-3">
+              <label>Shop Name</label>
+              <input
+                name="shopName"
+                className="form-control"
+                value={state.shopName}
+                onChange={changeHandler}
+                required
+                disabled={isSubmitting}
+              />
+            </div>
+            <div className="form-group mb-3">
+              <label>Shop category</label>
+              <select
+                className="form-select"
+                name="shopCategoryId"
+                value={state.shopCategoryId}
+                onChange={changeHandler}
+                required
+                disabled={isSubmitting}
+              >
+                {shopCategories.map((item, index) => (
+                  <option key={index} value={item.id}>
+                    {item.name}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="form-group mb-3">
               <label>Latitude (optional)</label>
               <input
