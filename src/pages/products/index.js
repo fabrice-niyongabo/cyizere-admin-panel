@@ -56,6 +56,13 @@ const Products = () => {
   //
   const [productsToShow, setProductsToshow] = useState([]);
 
+  //updating image
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(undefined);
+  const [updatedImage, setUpdatedImage] = useState(undefined);
+  const [showUpdateImageAlert, setShowUpdateImageAlert] = useState(false);
+  const updateImageRef = useRef(null);
+
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
@@ -143,6 +150,39 @@ const Products = () => {
     return undefined;
   };
 
+  const updateImage = () => {
+    if (selectedImage === undefined || updatedImage === undefined) {
+      return;
+    }
+    setIsUpdating(true);
+    const formData = new FormData();
+    formData.append("file", updatedImage);
+    formData.append("pId", selectedImage.pId);
+    axios
+      .put(BACKEND_URL + "/products/image", formData, setHeaders(token))
+      .then((res) => {
+        setIsUpdating(false);
+        toastMessage("success", res.data.msg);
+        const newData = productsToShow;
+        const index = newData.findIndex(
+          (item) => item.pId === selectedImage.pId
+        );
+        if (index > -1) {
+          newData[index] = { ...newData[index], image: res.data.image };
+          setProductsToshow(newData);
+        }
+        setSelectedImage(undefined);
+        updateImageRef.current.value = "";
+      })
+      .catch((error) => {
+        setSelectedImage(undefined);
+        setUpdatedImage(undefined);
+        updateImageRef.current.value = "";
+        setIsUpdating(false);
+        errorHandler(error);
+      });
+  };
+
   return (
     <>
       <Grid container spacing={3}>
@@ -208,6 +248,35 @@ const Products = () => {
                               alt=""
                               style={{ width: 50, height: 40 }}
                             />
+
+                            <input
+                              type="file"
+                              name="image"
+                              className="d-none"
+                              onChange={(e) => {
+                                setUpdatedImage(e.target.files[0]);
+                                setShowUpdateImageAlert(true);
+                              }}
+                              required
+                              ref={updateImageRef}
+                            />
+                            {isUpdating && selectedImage?.pId === item?.pId ? (
+                              <Spinner size="sm" />
+                            ) : (
+                              <span
+                                style={{
+                                  display: "inline-block",
+                                  cursor: "pointer",
+                                  padding: 5,
+                                }}
+                                onClick={() => {
+                                  setSelectedImage(item);
+                                  updateImageRef.current.click();
+                                }}
+                              >
+                                <EditOutlined />
+                              </span>
+                            )}
                           </td>
                           <td>{item.name}</td>
                           <td>{item.description}</td>
@@ -299,6 +368,12 @@ const Products = () => {
         setShowModal={setShowPriceModal}
         showModal={showPriceModal}
         productItem={priceProduct}
+      />
+      <Confirmation
+        title="Do you want to update this image?"
+        setShowAlert={setShowUpdateImageAlert}
+        showAlert={showUpdateImageAlert}
+        callback={updateImage}
       />
     </>
   );
