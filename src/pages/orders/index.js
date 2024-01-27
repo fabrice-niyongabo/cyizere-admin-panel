@@ -41,24 +41,24 @@ const Orders = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
 
-  const [isHidingProduct, setIsHiddingProduct] = useState(false);
-  const [showHideAlert, setShowHideAlert] = useState(false);
+  const [isCancellingOrder, setIsCancellingOrder] = useState(false);
+  const [showCancellAlert, setShowCancellAlert] = useState(false);
 
-  const handleHideOrder = () => {
-    setIsHiddingProduct(true);
+  const handleCancellOrder = () => {
+    setIsCancellingOrder(true);
     axios
       .post(
-        BACKEND_URL + "/orders/toggle",
+        BACKEND_URL + "/orders/cancell",
         { orderId: selectedOrder.id },
         setHeaders(token)
       )
       .then((res) => {
-        setIsHiddingProduct(false);
+        setIsCancellingOrder(false);
         dispatch(setAddOrUpdateOrder(res.data.order));
         toastMessage("success", res.data.msg);
       })
       .catch((error) => {
-        setIsHiddingProduct(false);
+        setIsCancellingOrder(false);
         errorHandler(error);
       });
   };
@@ -384,48 +384,25 @@ const Orders = () => {
                           </td>
                           <td>{new Date(item.createdAt).toUTCString()}</td>
                           <td>
-                            {item.paymentStatus !== "SUCCESS" && (
-                              <>
-                                {item.isHidden ? (
-                                  <button
-                                    disabled={
-                                      isHidingProduct &&
-                                      selectedOrder?.id === item.id
-                                    }
-                                    onClick={() => {
-                                      setSelectedOrder(item);
-                                      setShowHideAlert(true);
-                                    }}
-                                    className="btn btn-danger"
-                                    title="This order will be visible to the users"
-                                  >
-                                    {isHidingProduct &&
-                                      selectedOrder?.id === item.id && (
-                                        <Spinner size="sm" />
-                                      )}{" "}
-                                    Show Order
-                                  </button>
-                                ) : (
-                                  <button
-                                    disabled={
-                                      isHidingProduct &&
-                                      selectedOrder?.id === item.id
-                                    }
-                                    onClick={() => {
-                                      setSelectedOrder(item);
-                                      setShowHideAlert(true);
-                                    }}
-                                    className="btn btn-primary"
-                                    title="This order will be hiddedn from users"
-                                  >
-                                    {isHidingProduct &&
-                                      selectedOrder?.id === item.id && (
-                                        <Spinner size="sm" />
-                                      )}{" "}
-                                    Cancel Order
-                                  </button>
-                                )}
-                              </>
+                            {item.paymentStatus !== "FAILED" && (
+                              <button
+                                disabled={
+                                  isCancellingOrder &&
+                                  selectedOrder?.id === item.id
+                                }
+                                onClick={() => {
+                                  setSelectedOrder(item);
+                                  setShowCancellAlert(true);
+                                }}
+                                className="btn btn-danger"
+                                title="This order will be cancelled"
+                              >
+                                {isCancellingOrder &&
+                                  selectedOrder?.id === item.id && (
+                                    <Spinner size="sm" />
+                                  )}{" "}
+                                Cancel Order
+                              </button>
                             )}
                           </td>
                         </tr>
@@ -454,12 +431,10 @@ const Orders = () => {
         products={allProducts}
       />
       <Confirmation
-        callback={handleHideOrder}
-        setShowAlert={setShowHideAlert}
-        showAlert={showHideAlert}
-        title={
-          "Do you want to make this changes for order #" + selectedOrder?.id
-        }
+        callback={handleCancellOrder}
+        setShowAlert={setShowCancellAlert}
+        showAlert={showCancellAlert}
+        title={"Do you want to cancel order #" + selectedOrder?.id}
       />
     </>
   );
