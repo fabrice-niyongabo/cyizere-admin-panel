@@ -3,11 +3,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { APP_COLORS, BACKEND_URL } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
-import { currencyFormatter, errorHandler, setHeaders } from "../../helpers";
+import {
+  currencyFormatter,
+  errorHandler,
+  setHeaders,
+  toastMessage,
+} from "../../helpers";
 import { Grid } from "@mui/material";
 import Loader from "../loader";
-import { fetchOrders } from "../../actions/orders";
+import { fetchOrders, setAddOrUpdateOrder } from "../../actions/orders";
 import Products from "./products";
+import Confirmation from "../../controllers/confirmation";
+import { Spinner } from "react-bootstrap";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -33,6 +40,28 @@ const Orders = () => {
   const [isLoadingProducts, setIsLoadingProducts] = useState(false);
   const [suppliers, setSuppliers] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
+
+  const [isHidingProduct, setIsHiddingProduct] = useState(false);
+  const [showHideAlert, setShowHideAlert] = useState(false);
+
+  const handleHideOrder = () => {
+    setIsHiddingProduct(true);
+    axios
+      .post(
+        BACKEND_URL + "/orders/toggle",
+        { orderId: selectedOrder.id },
+        setHeaders(token)
+      )
+      .then((res) => {
+        setIsHiddingProduct(false);
+        dispatch(setAddOrUpdateOrder(res.data.order));
+        toastMessage("success", res.data.msg);
+      })
+      .catch((error) => {
+        setIsHiddingProduct(false);
+        errorHandler(error);
+      });
+  };
 
   const fetchSuppliers = () => {
     setIsLoadingSuppliers(true);
@@ -258,6 +287,7 @@ const Orders = () => {
                         <th>Client</th>
                         <th>Rider</th>
                         <th>Date</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -353,6 +383,51 @@ const Orders = () => {
                             </p>
                           </td>
                           <td>{new Date(item.createdAt).toUTCString()}</td>
+                          <td>
+                            {item.paymentStatus !== "SUCCESS" && (
+                              <>
+                                {item.isHidden ? (
+                                  <button
+                                    disabled={
+                                      isHidingProduct &&
+                                      selectedOrder?.id === item.id
+                                    }
+                                    onClick={() => {
+                                      setSelectedOrder(item);
+                                      setShowHideAlert(true);
+                                    }}
+                                    className="btn btn-danger"
+                                    title="This order will be visible to the users"
+                                  >
+                                    {isHidingProduct &&
+                                      selectedOrder?.id === item.id && (
+                                        <Spinner size="sm" />
+                                      )}{" "}
+                                    Show Order
+                                  </button>
+                                ) : (
+                                  <button
+                                    disabled={
+                                      isHidingProduct &&
+                                      selectedOrder?.id === item.id
+                                    }
+                                    onClick={() => {
+                                      setSelectedOrder(item);
+                                      setShowHideAlert(true);
+                                    }}
+                                    className="btn btn-primary"
+                                    title="This order will be hiddedn from users"
+                                  >
+                                    {isHidingProduct &&
+                                      selectedOrder?.id === item.id && (
+                                        <Spinner size="sm" />
+                                      )}{" "}
+                                    Cancel Order
+                                  </button>
+                                )}
+                              </>
+                            )}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -377,6 +452,14 @@ const Orders = () => {
         setShowModal={setShowProducts}
         isLoading={isLoadingProducts}
         products={allProducts}
+      />
+      <Confirmation
+        callback={handleHideOrder}
+        setShowAlert={setShowHideAlert}
+        showAlert={showHideAlert}
+        title={
+          "Do you want to make this changes for order #" + selectedOrder?.id
+        }
       />
     </>
   );
