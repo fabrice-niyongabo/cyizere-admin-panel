@@ -384,26 +384,27 @@ const Orders = () => {
                           </td>
                           <td>{new Date(item.createdAt).toUTCString()}</td>
                           <td>
-                            {item.paymentStatus !== "FAILED" && (
-                              <button
-                                disabled={
-                                  isCancellingOrder &&
-                                  selectedOrder?.id === item.id
-                                }
-                                onClick={() => {
-                                  setSelectedOrder(item);
-                                  setShowCancellAlert(true);
-                                }}
-                                className="btn btn-danger"
-                                title="This order will be cancelled"
-                              >
-                                {isCancellingOrder &&
-                                  selectedOrder?.id === item.id && (
-                                    <Spinner size="sm" />
-                                  )}{" "}
-                                Cancel Order
-                              </button>
-                            )}
+                            {item.paymentStatus !== "FAILED" &&
+                              item.deliveryStatus !== "COMPLETED" && (
+                                <button
+                                  disabled={
+                                    isCancellingOrder &&
+                                    selectedOrder?.id === item.id
+                                  }
+                                  onClick={() => {
+                                    setSelectedOrder(item);
+                                    setShowCancellAlert(true);
+                                  }}
+                                  className="btn btn-danger"
+                                  title="This order will be cancelled"
+                                >
+                                  {isCancellingOrder &&
+                                    selectedOrder?.id === item.id && (
+                                      <Spinner size="sm" />
+                                    )}{" "}
+                                  Cancel Order
+                                </button>
+                              )}
                           </td>
                         </tr>
                       ))}
