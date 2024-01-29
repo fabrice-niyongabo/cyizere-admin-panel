@@ -3,18 +3,14 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { APP_COLORS, BACKEND_URL } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  currencyFormatter,
-  errorHandler,
-  setHeaders,
-  toastMessage,
-} from "../../helpers";
+import { currencyFormatter, errorHandler, setHeaders } from "../../helpers";
 import { Grid } from "@mui/material";
 import Loader from "../loader";
-import { fetchOrders, setAddOrUpdateOrder } from "../../actions/orders";
+import { fetchOrders } from "../../actions/orders";
 import Products from "./products";
-import Confirmation from "../../controllers/confirmation";
-import { Spinner } from "react-bootstrap";
+
+import { SettingOutlined } from "@ant-design/icons";
+import OrderSettings from "./settings";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -41,27 +37,7 @@ const Orders = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
 
-  const [isCancellingOrder, setIsCancellingOrder] = useState(false);
-  const [showCancellAlert, setShowCancellAlert] = useState(false);
-
-  const handleCancellOrder = () => {
-    setIsCancellingOrder(true);
-    axios
-      .post(
-        BACKEND_URL + "/orders/cancell",
-        { orderId: selectedOrder.id },
-        setHeaders(token)
-      )
-      .then((res) => {
-        setIsCancellingOrder(false);
-        dispatch(setAddOrUpdateOrder(res.data.order));
-        toastMessage("success", res.data.msg);
-      })
-      .catch((error) => {
-        setIsCancellingOrder(false);
-        errorHandler(error);
-      });
-  };
+  const [showOrderSettings, setShowOrderSettings] = useState(false);
 
   const fetchSuppliers = () => {
     setIsLoadingSuppliers(true);
@@ -387,22 +363,13 @@ const Orders = () => {
                             {item.paymentStatus !== "FAILED" &&
                               item.deliveryStatus !== "COMPLETED" && (
                                 <button
-                                  disabled={
-                                    isCancellingOrder &&
-                                    selectedOrder?.id === item.id
-                                  }
                                   onClick={() => {
                                     setSelectedOrder(item);
-                                    setShowCancellAlert(true);
+                                    setShowOrderSettings(true);
                                   }}
-                                  className="btn btn-danger"
-                                  title="This order will be cancelled"
+                                  className="btn btn-primary"
                                 >
-                                  {isCancellingOrder &&
-                                    selectedOrder?.id === item.id && (
-                                      <Spinner size="sm" />
-                                    )}{" "}
-                                  Cancel Order
+                                  <SettingOutlined />
                                 </button>
                               )}
                           </td>
@@ -431,11 +398,10 @@ const Orders = () => {
         isLoading={isLoadingProducts}
         products={allProducts}
       />
-      <Confirmation
-        callback={handleCancellOrder}
-        setShowAlert={setShowCancellAlert}
-        showAlert={showCancellAlert}
-        title={"Do you want to cancel order #" + selectedOrder?.id}
+      <OrderSettings
+        order={selectedOrder}
+        setShowModal={setShowOrderSettings}
+        showModal={showOrderSettings}
       />
     </>
   );
