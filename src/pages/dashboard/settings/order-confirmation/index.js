@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import Switch from "@mui/material/Switch";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import { BACKEND_URL } from "../../../constants";
-import { errorHandler, setHeaders, toastMessage } from "../../../helpers";
+import { BACKEND_URL } from "../../../../constants";
+import { errorHandler, setHeaders, toastMessage } from "../../../../helpers";
 
-function SystemStatus() {
+function OrderConfirmation() {
   const [isActive, setIsActive] = useState([true]);
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useSelector((state) => state.user);
@@ -14,7 +14,7 @@ function SystemStatus() {
     setIsLoading(true);
     axios
       .put(
-        BACKEND_URL + "/system",
+        BACKEND_URL + "/ordersConfirmation",
         {
           isActive: !isActive,
         },
@@ -33,10 +33,10 @@ function SystemStatus() {
   const fetchStatus = () => {
     setIsLoading(true);
     axios
-      .get(BACKEND_URL + "/system/")
+      .get(BACKEND_URL + "/ordersConfirmation/")
       .then((res) => {
         setIsLoading(false);
-        setIsActive(res.data.systemStatus.isActive);
+        setIsActive(res.data.confirmationStatus.isActive);
       })
       .catch((error) => {
         setIsLoading(false);
@@ -48,9 +48,21 @@ function SystemStatus() {
     fetchStatus();
   }, []);
   return (
-    <div>
-      <h2>SystemStatus</h2>
-      <div>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <span>Riders can auto approve delivery</span>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Switch
           disabled={isLoading}
           checked={isActive}
@@ -62,4 +74,4 @@ function SystemStatus() {
   );
 }
 
-export default SystemStatus;
+export default OrderConfirmation;

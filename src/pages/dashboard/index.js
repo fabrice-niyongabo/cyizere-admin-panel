@@ -3,40 +3,24 @@ import { useState } from "react";
 // material-ui
 import {
   Avatar,
-  AvatarGroup,
-  Box,
-  Button,
   Grid,
   List,
   ListItemAvatar,
   ListItemButton,
   ListItemSecondaryAction,
   ListItemText,
-  MenuItem,
   Stack,
-  TextField,
   Typography,
 } from "@mui/material";
 
 // project import
 import OrdersTable from "./OrdersTable";
-import IncomeAreaChart from "./IncomeAreaChart";
-import MonthlyBarChart from "./MonthlyBarChart";
-import ReportAreaChart from "./ReportAreaChart";
 import SalesColumnChart from "./SalesColumnChart";
 import MainCard from "../../components/MainCard";
 import AnalyticEcommerce from "../../components/cards/statistics/AnalyticEcommerce";
 
 // assets
-import {
-  GiftOutlined,
-  MessageOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import avatar1 from "../../assets/images/users/avatar-1.png";
-import avatar2 from "../../assets/images/users/avatar-2.png";
-import avatar3 from "../../assets/images/users/avatar-3.png";
-import avatar4 from "../../assets/images/users/avatar-4.png";
+import { GiftOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchOrders } from "../../actions/orders";
@@ -45,7 +29,7 @@ import { currencyFormatter, errorHandler, setHeaders } from "../../helpers";
 import axios from "axios";
 import { fetchPaymentList } from "../../actions/supplierpayments";
 import { fetchNotifications } from "../../actions/notifications";
-import SystemStatus from "./system-status";
+import Settings from "./settings";
 
 // avatar style
 const avatarSX = {
@@ -64,32 +48,12 @@ const actionSX = {
   transform: "none",
 };
 
-// sales report status
-const status = [
-  {
-    value: "today",
-    label: "Today",
-  },
-  {
-    value: "month",
-    label: "This Month",
-  },
-  {
-    value: "year",
-    label: "This Year",
-  },
-];
-
 const DashboardDefault = () => {
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.user);
   const { orders, isLoading } = useSelector((state) => state.orders);
-  const { payments } = useSelector((state) => state.supplierpayments);
   const [users, setUsers] = useState([]);
   const [transactions, setTransactions] = useState([]);
-
-  const [value, setValue] = useState("today");
-  const [slot, setSlot] = useState("week");
 
   useEffect(() => {
     dispatch(fetchOrders());
@@ -149,7 +113,7 @@ const DashboardDefault = () => {
         />
       </Grid>
       <Grid item xs={12} sm={6} md={4} lg={3}>
-        <SystemStatus />
+        <Settings />
       </Grid>
 
       <Grid
