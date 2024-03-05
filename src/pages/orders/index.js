@@ -11,6 +11,7 @@ import Products from "./products";
 
 import { SettingOutlined } from "@ant-design/icons";
 import OrderSettings from "./settings";
+import Paginator from "../../components/paginator";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -38,6 +39,18 @@ const Orders = () => {
   const [allProducts, setAllProducts] = useState([]);
 
   const [showOrderSettings, setShowOrderSettings] = useState(false);
+
+  //pagination
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemOffset, setItemOffset] = useState(0);
+
+  const endOffset = itemOffset + itemsPerPage;
+  const itemsToShow = ordersToShow.slice(
+    itemOffset > ordersToShow.length ? 0 : itemOffset,
+    endOffset
+  );
+  const pageCount = Math.ceil(ordersToShow.length / itemsPerPage);
+  //pagination
 
   const fetchSuppliers = () => {
     setIsLoadingSuppliers(true);
@@ -267,7 +280,7 @@ const Orders = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {ordersToShow.map((item, index) => (
+                      {itemsToShow.map((item, index) => (
                         <tr key={index}>
                           <td>{item.id}</td>
                           <td>
@@ -377,6 +390,14 @@ const Orders = () => {
                       ))}
                     </tbody>
                   </table>
+
+                  <Paginator
+                    itemsPerPage={itemsPerPage}
+                    pageCount={pageCount}
+                    setItemOffset={setItemOffset}
+                    setItemsPerPage={setItemsPerPage}
+                    tableData={ordersToShow}
+                  />
                   <p className="text-success">
                     <b>Total success orders: </b>{" "}
                     {currencyFormatter(successTotal)} RWF
