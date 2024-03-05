@@ -6,9 +6,6 @@ import MainLayout from "../layout/MainLayout";
 import ProtectedRoute from "../controllers/protected-route";
 
 const DashboardDefault = Loadable(lazy(() => import("../pages/dashboard")));
-const AntIcons = Loadable(
-  lazy(() => import("../pages/components-overview/AntIcons"))
-);
 
 const ProductCategories = Loadable(
   lazy(() => import("../pages/product-categories"))
@@ -27,9 +24,7 @@ const RidersWallet = Loadable(lazy(() => import("../pages/riders-wallet")));
 const Transactions = Loadable(
   lazy(() => import("../pages/client-transactions"))
 );
-const Supplierspayment = Loadable(
-  lazy(() => import("../pages/supplierspayment"))
-);
+
 const SystemFees = Loadable(lazy(() => import("../pages/system-fees")));
 const PackagingFees = Loadable(lazy(() => import("../pages/packagingFees")));
 const Orders = Loadable(lazy(() => import("../pages/orders")));

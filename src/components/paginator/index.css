@@ -1,0 +1,60 @@
+.pagination-main-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.pagination-main-container select {
+  display: inline-block;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  outline: none;
+}
+.pagination-main-container a {
+  display: block;
+  height: 100%;
+  padding: 5px 10px;
+  font-weight: 600;
+}
+.pagination-main-container div {
+  &:first-child {
+    width: 100px;
+  }
+}
+.pagination-main-container .break {
+  display: inline-block;
+}
+.pagination-main-container .paginationContainer {
+  width: 100%;
+  margin-left: 10px;
+}
+.pagination-main-container .pageClassName {
+  list-style: none;
+  display: inline-block;
+  margin: 0px 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  margin-bottom: 5px;
+}
+.pagination-main-container .activeClassName {
+  background-color: rgb(51 65 85 / 1);
+  color: white;
+}
+.pagination-main-container .previousClassName {
+  list-style: none;
+  display: inline-block;
+  margin: 0px 5px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  a {
+    text-decoration: none;
+    color: black;
+  }
+}
+.pagination-main-container .disabledLinkClassName {
+  opacity: 0.2;
+  cursor: not-allowed;
+}

@@ -18,6 +18,7 @@ import Confirmation from "../../controllers/confirmation";
 import Prices from "./prices/index";
 import Featured from "./featured";
 import MainFeatured from "./main-featured";
+import Paginator from "../../components/paginator";
 
 const initialState = {
   marketId: "",
@@ -63,6 +64,18 @@ const Products = () => {
   const [updatedImage, setUpdatedImage] = useState(undefined);
   const [showUpdateImageAlert, setShowUpdateImageAlert] = useState(false);
   const updateImageRef = useRef(null);
+
+  //pagination
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemOffset, setItemOffset] = useState(0);
+
+  const endOffset = itemOffset + itemsPerPage;
+  const itemsToShow = productsToShow.slice(
+    itemOffset > productsToShow.length ? 0 : itemOffset,
+    endOffset
+  );
+  const pageCount = Math.ceil(productsToShow.length / itemsPerPage);
+  //pagination
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -250,7 +263,7 @@ const Products = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {productsToShow.map((item, index) => (
+                      {itemsToShow.map((item, index) => (
                         <tr key={index}>
                           <td>{index + 1}</td>
                           <td>
@@ -355,6 +368,14 @@ const Products = () => {
                       ))}
                     </tbody>
                   </table>
+
+                  <Paginator
+                    itemsPerPage={itemsPerPage}
+                    pageCount={pageCount}
+                    setItemOffset={setItemOffset}
+                    setItemsPerPage={setItemsPerPage}
+                    tableData={productsToShow}
+                  />
                 </div>
               )}
             </Card.Body>
