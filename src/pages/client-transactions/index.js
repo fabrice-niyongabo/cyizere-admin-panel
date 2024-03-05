@@ -3,25 +3,27 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BACKEND_URL } from "../../constants";
 import { useSelector } from "react-redux";
-import {
-  currencyFormatter,
-  errorHandler,
-  setHeaders,
-  toastMessage,
-} from "../../helpers";
+import { currencyFormatter, errorHandler, setHeaders } from "../../helpers";
 import { Grid } from "@mui/material";
 import Loader from "../loader";
-import {
-  EditOutlined,
-  CloseOutlined,
-  UserOutlined,
-  WhatsAppOutlined,
-} from "@ant-design/icons";
+import Paginator from "../../components/paginator";
 
 const Riders = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useSelector((state) => state.user);
   const [transactions, setTransactions] = useState([]);
+
+  //pagination
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [itemOffset, setItemOffset] = useState(0);
+
+  const endOffset = itemOffset + itemsPerPage;
+  const itemsToShow = transactions.slice(
+    itemOffset > transactions.length ? 0 : itemOffset,
+    endOffset
+  );
+  const pageCount = Math.ceil(transactions.length / itemsPerPage);
+  //pagination
 
   const fetchData = () => {
     setIsLoading(true);
@@ -69,7 +71,7 @@ const Riders = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {transactions.map((item, index) => (
+                      {itemsToShow.map((item, index) => (
                         <tr
                           key={index}
                           className={
@@ -89,6 +91,13 @@ const Riders = () => {
                       ))}
                     </tbody>
                   </table>
+                  <Paginator
+                    itemsPerPage={itemsPerPage}
+                    pageCount={pageCount}
+                    setItemOffset={setItemOffset}
+                    setItemsPerPage={setItemsPerPage}
+                    tableData={transactions}
+                  />
                 </div>
               )}
             </Card.Body>
