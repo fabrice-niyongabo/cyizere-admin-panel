@@ -10,6 +10,8 @@ import Loader from "../loader";
 import { EditOutlined, CloseOutlined } from "@ant-design/icons";
 import Edit from "./edit";
 import Confirmation from "../../controllers/confirmation";
+import Primary from "./primary";
+import Secondary from "./secondary";
 
 const initialState = { name: "", image: "", shopCategoryId: "" };
 const ProductCategories = () => {
@@ -125,6 +127,14 @@ const ProductCategories = () => {
     return name;
   };
 
+  const handleCategoryFlagsUpdate = (updatedCategory) => {
+    setMarkets((prev) =>
+      prev.map((item) =>
+        item.id === updatedCategory.id ? { ...item, ...updatedCategory } : item
+      )
+    );
+  };
+
   const updateImage = () => {
     if (selectedImage === undefined || updatedImage === undefined) {
       return;
@@ -180,6 +190,8 @@ const ProductCategories = () => {
                         <th>Image</th>
                         <th>Name</th>
                         <th>Shop Category</th>
+                        <th>Primary</th>
+                        <th>Secondary</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -224,6 +236,18 @@ const ProductCategories = () => {
                           </td>
                           <td>{item.name}</td>
                           <td>{returnShopCategoryName(item.shopCategoryId)}</td>
+                          <td className="text-center">
+                            <Primary
+                              item={item}
+                              onUpdate={handleCategoryFlagsUpdate}
+                            />
+                          </td>
+                          <td className="text-center">
+                            <Secondary
+                              item={item}
+                              onUpdate={handleCategoryFlagsUpdate}
+                            />
+                          </td>
                           <td>
                             {deleteItem &&
                             deleteItem.id === item.id &&
