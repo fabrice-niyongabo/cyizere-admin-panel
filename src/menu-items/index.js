@@ -6,6 +6,7 @@ import sales from "./sales";
 import fees from "./fees";
 import users from "./users";
 import transactions from "./transactions";
+import web from "./web";
 // import payments from "./payments";
 
 const menuItems = {
@@ -15,6 +16,7 @@ const menuItems = {
     products,
     // payments,
     sales,
+    web,
     fees,
     users,
     transactions,

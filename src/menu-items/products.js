@@ -1,5 +1,9 @@
 // assets
-import { ProfileOutlined, AlignLeftOutlined } from "@ant-design/icons";
+import {
+  ProfileOutlined,
+  AlignLeftOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 
 // ==============================|| MENU ITEMS - EXTRA PAGES ||============================== //
 
@@ -28,6 +32,13 @@ const pages = {
       type: "item",
       url: "/dashboard/products",
       icon: ProfileOutlined,
+    },
+    {
+      id: "createProduct",
+      title: "Create Product",
+      type: "item",
+      url: "/dashboard/products/create",
+      icon: PlusOutlined,
     },
   ],
 };

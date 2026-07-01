@@ -13,6 +13,9 @@ const ProductCategories = Loadable(
 const ShopCategories = Loadable(lazy(() => import("../pages/shop-categories")));
 const Markets = Loadable(lazy(() => import("../pages/markets")));
 const Products = Loadable(lazy(() => import("../pages/products")));
+const CreateProduct = Loadable(
+  lazy(() => import("../pages/products/create"))
+);
 const DeliveryFees = Loadable(lazy(() => import("../pages/delivery-fees")));
 const Dishes = Loadable(lazy(() => import("../pages/dishes")));
 const Users = Loadable(lazy(() => import("../pages/users")));
@@ -31,6 +34,7 @@ const Orders = Loadable(lazy(() => import("../pages/orders")));
 const Profile = Loadable(lazy(() => import("../pages/profile")));
 const TrackRiders = Loadable(lazy(() => import("../pages/track-rider")));
 const Banners = Loadable(lazy(() => import("../pages/banners")));
+const WebHeroSection = Loadable(lazy(() => import("../pages/web-hero-section")));
 const Notifications = Loadable(lazy(() => import("../pages/notifications")));
 
 const MainRoutes = {
@@ -64,6 +68,10 @@ const MainRoutes = {
     {
       path: "/dashboard/products",
       element: <Products />,
+    },
+    {
+      path: "/dashboard/products/create",
+      element: <CreateProduct />,
     },
     {
       path: "/dashboard/fees",
@@ -128,6 +136,10 @@ const MainRoutes = {
     {
       path: "/dashboard/banners",
       element: <Banners />,
+    },
+    {
+      path: "/dashboard/web-hero-section",
+      element: <WebHeroSection />,
     },
   ],
 };
