@@ -49,6 +49,11 @@ const Products = () => {
   const [deleteItem, setDeleteItem] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [bulkAction, setBulkAction] = useState(null);
+  const [showBulkAlert, setShowBulkAlert] = useState(false);
+  const [isBulkProcessing, setIsBulkProcessing] = useState(false);
+
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [priceProduct, setPriceProduct] = useState(null);
 
@@ -64,6 +69,7 @@ const Products = () => {
   const [updatedImage, setUpdatedImage] = useState(undefined);
   const [showUpdateImageAlert, setShowUpdateImageAlert] = useState(false);
   const updateImageRef = useRef(null);
+  const selectAllRef = useRef(null);
 
   //pagination
   const [itemsPerPage, setItemsPerPage] = useState(10);
@@ -76,6 +82,80 @@ const Products = () => {
   );
   const pageCount = Math.ceil(productsToShow.length / itemsPerPage);
   //pagination
+
+  const displayedIds = itemsToShow.map((item) => item.pId);
+  const allDisplayedSelected =
+    displayedIds.length > 0 &&
+    displayedIds.every((pId) => selectedIds.includes(pId));
+  const someDisplayedSelected =
+    displayedIds.some((pId) => selectedIds.includes(pId)) &&
+    !allDisplayedSelected;
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedIds((prev) => [...new Set([...prev, ...displayedIds])]);
+    } else {
+      setSelectedIds([]);
+    }
+  };
+
+  const handleSelectRow = (pId) => {
+    setSelectedIds((prev) =>
+      prev.includes(pId) ? prev.filter((id) => id !== pId) : [...prev, pId]
+    );
+  };
+
+  const getBulkConfirmationTitle = () => {
+    const count = selectedIds.length;
+    if (bulkAction === "delete") {
+      return `Do you want to delete ${count} selected product(s)? All associated information will be gone forever.`;
+    }
+    if (bulkAction === "activate") {
+      return `Do you want to mark ${count} selected product(s) as Active?`;
+    }
+    if (bulkAction === "deactivate") {
+      return `Do you want to mark ${count} selected product(s) as Inactive?`;
+    }
+    return "Do you want to perform this process?";
+  };
+
+  const handleBulkAction = async () => {
+    if (selectedIds.length === 0 || !bulkAction) {
+      return;
+    }
+    setIsBulkProcessing(true);
+    try {
+      let res;
+      if (bulkAction === "delete") {
+        res = await axios.delete(BACKEND_URL + "/products/bulk", {
+          ...setHeaders(token),
+          data: { pIds: selectedIds },
+        });
+      } else {
+        res = await axios.put(
+          BACKEND_URL + "/products/bulk/status",
+          {
+            pIds: selectedIds,
+            isActive: bulkAction === "activate",
+          },
+          setHeaders(token)
+        );
+      }
+      toastMessage("success", res.data.msg);
+      setSelectedIds([]);
+      fetchData();
+    } catch (error) {
+      errorHandler(error);
+    } finally {
+      setIsBulkProcessing(false);
+      setBulkAction(null);
+    }
+  };
+
+  const openBulkConfirmation = (action) => {
+    setBulkAction(action);
+    setShowBulkAlert(true);
+  };
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -161,6 +241,12 @@ const Products = () => {
     };
   }, [products, supplierFilter, searchKeyword]);
 
+  useEffect(() => {
+    if (selectAllRef.current) {
+      selectAllRef.current.indeterminate = someDisplayedSelected;
+    }
+  }, [someDisplayedSelected]);
+
   const getSupplierObj = (supplierId) => {
     const sup = suppliers.find((item) => item.supplierId == supplierId);
     if (sup) {
@@ -245,10 +331,71 @@ const Products = () => {
               {isLoading ? (
                 <Loader />
               ) : (
+                <>
+                  {selectedIds.length > 0 && (
+                    <div
+                      className="mb-3 p-2"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 10,
+                        flexWrap: "wrap",
+                        backgroundColor: "#f8f9fa",
+                        borderRadius: 4,
+                      }}
+                    >
+                      <strong>{selectedIds.length} selected</strong>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-danger"
+                        disabled={isBulkProcessing}
+                        onClick={() => openBulkConfirmation("delete")}
+                      >
+                        {isBulkProcessing && bulkAction === "delete" ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          "Delete Selected"
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-success"
+                        disabled={isBulkProcessing}
+                        onClick={() => openBulkConfirmation("activate")}
+                      >
+                        {isBulkProcessing && bulkAction === "activate" ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          "Mark as Active"
+                        )}
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-secondary"
+                        disabled={isBulkProcessing}
+                        onClick={() => openBulkConfirmation("deactivate")}
+                      >
+                        {isBulkProcessing && bulkAction === "deactivate" ? (
+                          <Spinner size="sm" />
+                        ) : (
+                          "Mark as Inactive"
+                        )}
+                      </button>
+                    </div>
+                  )}
                 <div className="table-responsive">
                   <table className="table table-bordered">
                     <thead>
                       <tr>
+                        <th style={{ width: 40 }}>
+                          <input
+                            type="checkbox"
+                            title="Select all displayed products"
+                            ref={selectAllRef}
+                            checked={allDisplayedSelected}
+                            onChange={handleSelectAll}
+                          />
+                        </th>
                         <th>#</th>
                         <th>Image</th>
                         <th>Name</th>
@@ -265,6 +412,13 @@ const Products = () => {
                     <tbody>
                       {itemsToShow.map((item, index) => (
                         <tr key={index}>
+                          <td>
+                            <input
+                              type="checkbox"
+                              checked={selectedIds.includes(item.pId)}
+                              onChange={() => handleSelectRow(item.pId)}
+                            />
+                          </td>
                           <td>{index + 1}</td>
                           <td>
                             <img
@@ -377,6 +531,7 @@ const Products = () => {
                     tableData={productsToShow}
                   />
                 </div>
+                </>
               )}
             </Card.Body>
           </Card>
@@ -406,6 +561,12 @@ const Products = () => {
         setShowAlert={setShowUpdateImageAlert}
         showAlert={showUpdateImageAlert}
         callback={updateImage}
+      />
+      <Confirmation
+        showAlert={showBulkAlert}
+        setShowAlert={setShowBulkAlert}
+        callback={handleBulkAction}
+        title={getBulkConfirmationTitle()}
       />
     </>
   );
